@@ -1,11 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Noto_Sans_Arabic, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { cafe } from "@/data/menu";
 
 const body = Inter({
   variable: "--font-body",
   subsets: ["latin", "latin-ext"],
+});
+
+const arabic = Noto_Sans_Arabic({
+  variable: "--font-arabic",
+  subsets: ["arabic"],
 });
 
 const display = Playfair_Display({
@@ -33,7 +38,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="tr">
-      <body className={`${body.variable} ${display.variable} antialiased`}>
+      <body className={`${body.variable} ${display.variable} ${arabic.variable} antialiased`}>
         {children}
       </body>
     </html>

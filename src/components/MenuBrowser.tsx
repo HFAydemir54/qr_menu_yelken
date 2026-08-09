@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { menu, type MenuCategory } from "@/data/menu";
+import { useLocale } from "@/i18n/LocaleProvider";
 
 const priceFormatter = new Intl.NumberFormat("tr-TR", {
   style: "currency",
@@ -25,7 +26,11 @@ function normalize(value: string) {
     .replaceAll("ç", "c");
 }
 
-function filterCategory(category: MenuCategory, query: string) {
+function filterCategory(
+  category: MenuCategory,
+  query: string,
+  m: (text: string) => string,
+) {
   const q = normalize(query.trim());
   if (!q) return category;
 
@@ -37,7 +42,9 @@ function filterCategory(category: MenuCategory, query: string) {
         items: group.items.filter(
           (item) =>
             normalize(item.name).includes(q) ||
-            normalize(item.note ?? "").includes(q),
+            normalize(m(item.name)).includes(q) ||
+            normalize(item.note ?? "").includes(q) ||
+            normalize(m(item.note ?? "")).includes(q),
         ),
       }))
       .filter((group) => group.items.length > 0),
@@ -45,6 +52,7 @@ function filterCategory(category: MenuCategory, query: string) {
 }
 
 export function MenuBrowser() {
+  const { t, m } = useLocale();
   const [query, setQuery] = useState("");
   const [activeId, setActiveId] = useState(menu[0].id);
   const navRef = useRef<HTMLDivElement>(null);
@@ -56,8 +64,8 @@ export function MenuBrowser() {
     [activeId],
   );
   const visible = useMemo(
-    () => filterCategory(activeCategory, query),
-    [activeCategory, query],
+    () => filterCategory(activeCategory, query, m),
+    [activeCategory, query, m],
   );
 
   // Yapışkan başlıkların üst konumu için gerçek yükseklikleri ölç
@@ -96,7 +104,7 @@ export function MenuBrowser() {
         <div
           ref={navRef}
           role="tablist"
-          aria-label="Menü kategorileri"
+          aria-label={t("categories")}
           className="no-scrollbar mx-auto flex max-w-3xl gap-2 overflow-x-auto px-4 py-3"
         >
           {menu.map((category) => {
@@ -117,7 +125,7 @@ export function MenuBrowser() {
                 }`}
               >
                 <span aria-hidden>{category.icon}</span>
-                {category.name}
+                {m(category.name)}
               </button>
             );
           })}
@@ -126,16 +134,16 @@ export function MenuBrowser() {
 
       <div className="mx-auto max-w-3xl px-4">
         <label className="relative mt-5 block">
-          <span className="sr-only">Menüde ara</span>
+          <span className="sr-only">{t("searchLabel")}</span>
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder={`${activeCategory.name} içinde ara…`}
-            className="w-full rounded-2xl border border-black/10 bg-white py-3 pl-11 pr-4 text-base outline-none placeholder:text-brand-muted focus:border-brand-gold"
+            placeholder={`${m(activeCategory.name)} ${t("searchIn")}`}
+            className="w-full rounded-2xl border border-black/10 bg-white py-3 pe-4 ps-11 text-base outline-none placeholder:text-brand-muted focus:border-brand-gold"
           />
           <svg
-            className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-brand-muted"
+            className="pointer-events-none absolute start-4 top-1/2 h-5 w-5 -translate-y-1/2 text-brand-muted"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -150,21 +158,21 @@ export function MenuBrowser() {
         <section
           id="menu-panel"
           role="tabpanel"
-          aria-label={activeCategory.name}
+          aria-label={m(activeCategory.name)}
           className="pt-6"
         >
           {/* Sekme barının altına yapışır, kategori boyunca ekranda kalır */}
           <div ref={catHeadRef} className="sticky top-[var(--tabbar-h)] z-20 -mx-1 bg-brand-cream px-1 pb-2 pt-3">
             <h2 className="font-display flex items-center gap-2 text-2xl font-bold text-brand-dark">
               <span aria-hidden>{visible.icon}</span>
-              {visible.name}
+              {m(visible.name)}
             </h2>
             <div className="mt-1 h-1 w-16 rounded-full bg-brand-gold" />
           </div>
 
           {visible.groups.length === 0 && (
             <p className="py-16 text-center text-brand-muted">
-              “{query}” için bu kategoride sonuç bulunamadı.
+              “{query}” {t("noResults")}
             </p>
           )}
 
@@ -174,7 +182,7 @@ export function MenuBrowser() {
                 /* Sırası gelen alt başlık kategori başlığının altına yapışır */
                 <div className="sticky top-[calc(var(--tabbar-h)+var(--cathead-h))] z-10 -mx-1 bg-brand-cream px-1 pb-2 pt-1">
                   <h3 className="inline-block rounded-md bg-brand-gold/25 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-brand-dark">
-                    {group.title}
+                    {m(group.title)}
                   </h3>
                 </div>
               )}
@@ -185,10 +193,10 @@ export function MenuBrowser() {
                     className="flex items-start gap-3 border-b border-black/5 px-4 py-3 last:border-b-0"
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="font-medium leading-snug">{item.name}</p>
+                      <p className="font-medium leading-snug">{m(item.name)}</p>
                       {item.note && (
                         <p className="mt-0.5 text-xs leading-snug text-brand-muted">
-                          {item.note}
+                          {m(item.note)}
                         </p>
                       )}
                     </div>

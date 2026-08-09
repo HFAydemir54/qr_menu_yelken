@@ -38,7 +38,7 @@ html {
 body {
   background: var(--brand-cream);
   color: var(--brand-ink);
-  font-family: var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-body), var(--font-arabic), system-ui, sans-serif;
   overflow-x: hidden;
 }
 
