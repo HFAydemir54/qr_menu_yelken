@@ -9,6 +9,10 @@
   --brand-paper: #fffdf8;
   --brand-ink: #2c2320;
   --brand-muted: #8a7a6e;
+
+  /* Yapışkan başlık yükseklikleri — çalışma anında JS ile ölçülüp güncellenir */
+  --tabbar-h: 64px;
+  --cathead-h: 56px;
 }
 
 @theme inline {

@@ -48,6 +48,8 @@ export function MenuBrowser() {
   const [query, setQuery] = useState("");
   const [activeId, setActiveId] = useState(menu[0].id);
   const navRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const catHeadRef = useRef<HTMLDivElement>(null);
 
   const activeCategory = useMemo(
     () => menu.find((category) => category.id === activeId) ?? menu[0],
@@ -58,6 +60,29 @@ export function MenuBrowser() {
     [activeCategory, query],
   );
 
+  // Yapışkan başlıkların üst konumu için gerçek yükseklikleri ölç
+  useEffect(() => {
+    const targets: [HTMLElement | null, string][] = [
+      [barRef.current, "--tabbar-h"],
+      [catHeadRef.current, "--cathead-h"],
+    ];
+    const sync = () => {
+      for (const [el, name] of targets) {
+        if (el) {
+          document.documentElement.style.setProperty(
+            name,
+            `${Math.round(el.getBoundingClientRect().height)}px`,
+          );
+        }
+      }
+    };
+    sync();
+
+    const observer = new ResizeObserver(sync);
+    for (const [el] of targets) if (el) observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   // Seçili sekmeyi yatay barda görünür alana getir
   useEffect(() => {
     navRef.current
@@ -67,7 +92,7 @@ export function MenuBrowser() {
 
   return (
     <>
-      <div className="sticky top-0 z-30 border-b border-black/10 bg-brand-cream/95 backdrop-blur">
+      <div ref={barRef} className="sticky top-0 z-30 border-b border-black/10 bg-brand-cream/95 backdrop-blur">
         <div
           ref={navRef}
           role="tablist"
@@ -128,11 +153,14 @@ export function MenuBrowser() {
           aria-label={activeCategory.name}
           className="pt-6"
         >
-          <h2 className="font-display flex items-center gap-2 text-2xl font-bold text-brand-dark">
-            <span aria-hidden>{visible.icon}</span>
-            {visible.name}
-          </h2>
-          <div className="mt-1 h-1 w-16 rounded-full bg-brand-gold" />
+          {/* Sekme barının altına yapışır, kategori boyunca ekranda kalır */}
+          <div ref={catHeadRef} className="sticky top-[var(--tabbar-h)] z-20 -mx-1 bg-brand-cream px-1 pb-2 pt-3">
+            <h2 className="font-display flex items-center gap-2 text-2xl font-bold text-brand-dark">
+              <span aria-hidden>{visible.icon}</span>
+              {visible.name}
+            </h2>
+            <div className="mt-1 h-1 w-16 rounded-full bg-brand-gold" />
+          </div>
 
           {visible.groups.length === 0 && (
             <p className="py-16 text-center text-brand-muted">
@@ -141,11 +169,14 @@ export function MenuBrowser() {
           )}
 
           {visible.groups.map((group, groupIndex) => (
-            <div key={group.title ?? groupIndex} className="mt-5">
+            <div key={group.title ?? groupIndex} className="mt-4">
               {group.title && (
-                <h3 className="mb-2 inline-block rounded-md bg-brand-gold/25 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-brand-dark">
-                  {group.title}
-                </h3>
+                /* Sırası gelen alt başlık kategori başlığının altına yapışır */
+                <div className="sticky top-[calc(var(--tabbar-h)+var(--cathead-h))] z-10 -mx-1 bg-brand-cream px-1 pb-2 pt-1">
+                  <h3 className="inline-block rounded-md bg-brand-gold/25 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-brand-dark">
+                    {group.title}
+                  </h3>
+                </div>
               )}
               <ul className="overflow-hidden rounded-2xl bg-brand-paper shadow-sm ring-1 ring-black/5">
                 {group.items.map((item, itemIndex) => (
