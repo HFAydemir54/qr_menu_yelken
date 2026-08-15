@@ -1,0 +1,459 @@
+{
+  "priceDate": "04.02.2026",
+  "categories": [
+    {
+      "id": "kahvalti",
+      "name": "Kahvaltı",
+      "icon": "🍳",
+      "groups": [
+        {
+          "items": [
+            {
+              "name": "Mini Kahvaltı",
+              "note": "Domates, Salatalık, Beyaz Peynir, Kaşar Peyniri, Zeytin, Haşlanmış Yumurta, Karper Peyniri, Reçel",
+              "price": 350
+            },
+            {
+              "name": "Serpme Kahvaltı",
+              "note": "Domates, Salatalık, Beyaz Peynir, Kaşar Peyniri, Zeytin, Salam, Sosis, Bal, Tereyağ, Çikolata, Karper Peyniri, Reçel, Patates Kızartması, Sahanda Yumurta, Menemen, Sınırsız Çay — 3. kişi servis ücreti 250 TL'dir.",
+              "price": 1100
+            },
+            {
+              "name": "Omlet",
+              "price": 200
+            },
+            {
+              "name": "Sahanda 2 Yumurta",
+              "price": 210
+            },
+            {
+              "name": "Sahanda 2 Yumurta",
+              "note": "Kaşarlı",
+              "price": 230
+            },
+            {
+              "name": "Sahanda 2 Yumurta",
+              "note": "Sucuklu",
+              "price": 240
+            },
+            {
+              "name": "Sahanda 2 Yumurta",
+              "note": "Kaşarlı, Sucuklu",
+              "price": 250
+            },
+            {
+              "name": "Menemen",
+              "price": 210
+            },
+            {
+              "name": "Menemen",
+              "note": "Kaşarlı",
+              "price": 230
+            },
+            {
+              "name": "Menemen",
+              "note": "Karışık",
+              "price": 250
+            },
+            {
+              "name": "Söğüş Tabağı",
+              "price": 160
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fast-food",
+      "name": "Fast Food",
+      "icon": "🍔",
+      "groups": [
+        {
+          "title": "Tost",
+          "items": [
+            {
+              "name": "Kaşarlı Tost",
+              "price": 140
+            },
+            {
+              "name": "Kaşarlı Sucuklu Tost",
+              "price": 180
+            },
+            {
+              "name": "Beyaz Peynirli Tost",
+              "price": 180
+            },
+            {
+              "name": "Karışık Tost",
+              "note": "Kaşar, Sucuk, Domates, Ketçap",
+              "price": 200
+            }
+          ]
+        },
+        {
+          "title": "Burger Menü",
+          "items": [
+            {
+              "name": "Hamburger Menü",
+              "note": "Patates Kızartması + Cola",
+              "price": 330
+            },
+            {
+              "name": "Double Köfte Hamburger Menü",
+              "note": "Patates Kızartması + Cola",
+              "price": 380
+            },
+            {
+              "name": "Cheese Burger Menü",
+              "note": "Patates Kızartması + Cola",
+              "price": 380
+            },
+            {
+              "name": "Double Cheese Burger Menü",
+              "note": "Patates Kızartması + Cola",
+              "price": 430
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "name": "Patates Kızartması",
+              "note": "Porsiyon",
+              "price": 250
+            },
+            {
+              "name": "Patso",
+              "price": 220
+            },
+            {
+              "name": "Patso",
+              "note": "Sosisli",
+              "price": 270
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pide-borek",
+      "name": "Pide & Börek",
+      "icon": "🥟",
+      "groups": [
+        {
+          "title": "Kır Pidesi",
+          "items": [
+            {
+              "name": "Kıymalı Kır Pidesi",
+              "price": 50
+            },
+            {
+              "name": "Peynirli Kır Pidesi",
+              "price": 50
+            },
+            {
+              "name": "Patatesli Kır Pidesi",
+              "price": 50
+            }
+          ]
+        },
+        {
+          "title": "Açık Pide",
+          "items": [
+            {
+              "name": "Güveç Pide",
+              "price": 100
+            },
+            {
+              "name": "Kaşarlı Açık Pide",
+              "price": 300
+            },
+            {
+              "name": "Kaşarlı Sucuklu Açık Pide",
+              "price": 330
+            },
+            {
+              "name": "Kıymalı Açık Pide",
+              "price": 330
+            },
+            {
+              "name": "Kavurmalı Kaşarlı Açık Pide",
+              "price": 420
+            },
+            {
+              "name": "Karışık Açık Pide",
+              "price": 400
+            }
+          ]
+        },
+        {
+          "title": "Poğaça · Açma · Börek",
+          "items": [
+            {
+              "name": "Poğaça - Simit - Sade Açma",
+              "price": 25
+            },
+            {
+              "name": "Çekirdekli Simit",
+              "price": 30
+            },
+            {
+              "name": "Dereotlu Poğaça",
+              "price": 30
+            },
+            {
+              "name": "Açma Çeşitleri",
+              "price": 30
+            },
+            {
+              "name": "Açma Pizza",
+              "price": 40
+            },
+            {
+              "name": "Simit Pizza",
+              "price": 50
+            },
+            {
+              "name": "Dilim Pizza",
+              "price": 100
+            },
+            {
+              "name": "Sandviç",
+              "price": 100
+            },
+            {
+              "name": "Boyoz",
+              "note": "Sade",
+              "price": 40
+            },
+            {
+              "name": "Sigara Böreği",
+              "price": 50
+            },
+            {
+              "name": "Küt Böreği",
+              "note": "Porsiyon",
+              "price": 100
+            },
+            {
+              "name": "Kol Böreği",
+              "note": "Kıymalı, Patatesli, Peynirli — Porsiyon",
+              "price": 170
+            },
+            {
+              "name": "Su Böreği",
+              "note": "Porsiyon",
+              "price": 170
+            },
+            {
+              "name": "Adana Böreği",
+              "note": "Kaşarlı — Porsiyon",
+              "price": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kahve",
+      "name": "Kahve",
+      "icon": "☕",
+      "groups": [
+        {
+          "items": [
+            {
+              "name": "Türk Kahvesi",
+              "price": 120
+            },
+            {
+              "name": "Sütlü Türk Kahvesi",
+              "price": 140
+            },
+            {
+              "name": "Damla Sakızlı Türk Kahvesi",
+              "price": 140
+            },
+            {
+              "name": "Double Türk Kahvesi",
+              "price": 200
+            },
+            {
+              "name": "Menengiç",
+              "price": 140
+            },
+            {
+              "name": "Dibek Kahvesi",
+              "price": 120
+            },
+            {
+              "name": "Espresso",
+              "price": 120
+            },
+            {
+              "name": "Americano",
+              "price": 150
+            },
+            {
+              "name": "Latte",
+              "price": 180
+            },
+            {
+              "name": "Cappuccino",
+              "price": 170
+            },
+            {
+              "name": "Nescafe",
+              "price": 80
+            },
+            {
+              "name": "Sütlü Nescafe",
+              "price": 100
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "icecekler",
+      "name": "İçecekler",
+      "icon": "🥤",
+      "groups": [
+        {
+          "title": "Soğuk İçecek",
+          "items": [
+            {
+              "name": "Su",
+              "price": 20
+            },
+            {
+              "name": "Meyve Suyu Çeşitleri",
+              "note": "200 ml",
+              "price": 30
+            },
+            {
+              "name": "Link Çeşitleri",
+              "note": "200 ml",
+              "price": 30
+            },
+            {
+              "name": "Küçük Ayran",
+              "note": "175 ml",
+              "price": 30
+            },
+            {
+              "name": "Büyük Ayran",
+              "note": "275 ml",
+              "price": 45
+            },
+            {
+              "name": "Sade Soda",
+              "note": "200 ml",
+              "price": 30
+            },
+            {
+              "name": "Meyveli Soda",
+              "note": "200 ml",
+              "price": 35
+            },
+            {
+              "name": "Çamlıca Gazoz",
+              "note": "220 ml",
+              "price": 50
+            },
+            {
+              "name": "Süt Çeşitleri",
+              "note": "200 ml",
+              "price": 35
+            },
+            {
+              "name": "Kutu Soğuk Nescafe",
+              "note": "250 ml",
+              "price": 70
+            },
+            {
+              "name": "Lipton Çeşitleri",
+              "note": "330 ml",
+              "price": 70
+            },
+            {
+              "name": "Kutu Cola - Fanta Çeşitleri",
+              "note": "330 ml",
+              "price": 70
+            },
+            {
+              "name": "Kutu Cappy Çeşitleri",
+              "note": "330 ml",
+              "price": 70
+            },
+            {
+              "name": "1 Litrelik İçecek",
+              "note": "Cola, Fanta, Ayran, Meyve Suyu",
+              "price": 110
+            },
+            {
+              "name": "Açık Limonata",
+              "note": "330 ml",
+              "price": 120
+            }
+          ]
+        },
+        {
+          "title": "Sıcak İçecek",
+          "items": [
+            {
+              "name": "Küçük Çay",
+              "price": 30
+            },
+            {
+              "name": "Büyük Çay",
+              "price": 50
+            },
+            {
+              "name": "Yeşil Çay",
+              "price": 70
+            },
+            {
+              "name": "Kuşburnu",
+              "price": 70
+            },
+            {
+              "name": "Ihlamur",
+              "price": 70
+            },
+            {
+              "name": "Sıcak Süt",
+              "price": 60
+            },
+            {
+              "name": "Sahlep",
+              "price": 80
+            },
+            {
+              "name": "Sıcak Çikolata",
+              "price": 100
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kurabiye",
+      "name": "Kurabiye",
+      "icon": "🍪",
+      "groups": [
+        {
+          "items": [
+            {
+              "name": "Elmalı Kurabiye",
+              "price": 25
+            },
+            {
+              "name": "İzmir Bomba",
+              "price": 50
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
