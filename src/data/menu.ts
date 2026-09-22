@@ -1,29 +1,38 @@
-import menuData from "./menu.json";
+import type { Locale } from "@/i18n/config";
+
+/** Üç dilli metin. Karşılığı olmayan dillerde Türkçe gösterilir. */
+export type Localized = Record<Locale, string | null> & { tr: string };
 
 export type MenuItem = {
-  name: string;
+  id: string;
+  name: Localized;
   /** Parantez içi açıklama / içindekiler */
-  note?: string;
-  /** TL cinsinden fiyat. null ise menüde "—" gösterilir. */
+  note: Localized | null;
+  /** TL cinsinden fiyat. null ise menüde fiyat gösterilmez. */
   price: number | null;
+  imageUrl: string | null;
+  available: boolean;
 };
 
 export type MenuGroup = {
+  id: string;
   /** Kategori içindeki alt başlık (ör. "TOST", "KIR PİDESİ"). Yoksa doğrudan listelenir. */
-  title?: string;
+  title: Localized | null;
   items: MenuItem[];
 };
 
 export type MenuCategory = {
   id: string;
-  name: string;
+  slug: string;
+  name: Localized;
   icon: string;
+  active: boolean;
   groups: MenuGroup[];
 };
 
-/** Menü verisi src/data/menu.json içinde tutulur; /admin panelinden güncellenir. */
-export const menu: MenuCategory[] = menuData.categories as MenuCategory[];
+export type MenuData = { priceDate: string; categories: MenuCategory[] };
 
+/** Menü içeriği Supabase'de tutulur (bkz. src/lib/menu-repo.ts); burası sabit işletme bilgileri. */
 export const cafe = {
   name: "Yelken Börek Cafe",
   tagline: "Börek · Pide · Kahvaltı",
@@ -35,5 +44,4 @@ export const cafe = {
   hours: "Her gün · Kapanış 22:30",
   rating: 4.1,
   reviewCount: 102,
-  priceDate: menuData.priceDate,
 };

@@ -17,7 +17,7 @@ export function LoginForm() {
         Yönetim Paneli
       </h1>
       <p className="mt-1 text-sm text-brand-muted">
-        Fiyatları güncellemek için şifrenizi girin.
+        Menüyü yönetmek için şifrenizi girin.
       </p>
 
       <input

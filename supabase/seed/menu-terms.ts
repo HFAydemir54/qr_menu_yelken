@@ -1,7 +1,7 @@
-import type { Locale } from "./config";
+type Locale = "tr" | "en" | "ar";
 
 /**
- * Menü metinlerinin çevirileri. Anahtar, `src/data/menu.ts` içindeki
+ * Menü metinlerinin çevirileri. Anahtar, menu.json içindeki
  * Türkçe metnin birebir kendisidir; karşılığı yoksa Türkçe gösterilir.
  */
 export const menuTerms: Record<string, Partial<Record<Locale, string>>> = {
@@ -172,8 +172,3 @@ export const menuTerms: Record<string, Partial<Record<Locale, string>>> = {
       ar: "طماطم، خيار، جبن أبيض، جبن قشقوان، زيتون، سلامي، نقانق، عسل، زبدة، شوكولاتة، جبنة كريمية، مربى، بطاطس مقلية، بيض مقلي، منمن، شاي بلا حدود — رسوم خدمة الشخص الثالث ٢٥٠ ليرة.",
     },
 };
-
-export function translateTerm(text: string, locale: Locale) {
-  if (locale === "tr") return text;
-  return menuTerms[text]?.[locale] ?? text;
-}

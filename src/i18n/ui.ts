@@ -45,6 +45,7 @@ export const ui = {
     en: "Prices updated on",
     ar: "تاريخ تحديث الأسعار",
   },
+  soldOut: { tr: "Tükendi", en: "Sold out", ar: "نفد" },
   language: { tr: "Dil", en: "Language", ar: "اللغة" },
 } satisfies Record<string, Record<Locale, string>>;
 

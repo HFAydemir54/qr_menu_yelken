@@ -9,7 +9,7 @@ import {
 } from "react";
 import { localeMeta, type Locale } from "./config";
 import { localeStore } from "./locale-store";
-import { translateTerm } from "./menu-terms";
+import type { Localized } from "@/data/menu";
 import { t as translateUi, type UiKey } from "./ui";
 
 type LocaleContextValue = {
@@ -17,8 +17,8 @@ type LocaleContextValue = {
   setLocale: (locale: Locale) => void;
   /** Arayüz metni */
   t: (key: UiKey) => string;
-  /** Menü metni (Türkçe anahtar üzerinden) */
-  m: (text: string) => string;
+  /** Menü metni; seçili dilde karşılığı yoksa Türkçesi döner. */
+  m: (text: Localized | null | undefined) => string;
 };
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
@@ -41,7 +41,7 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
       locale,
       setLocale: localeStore.set,
       t: (key) => translateUi(key, locale),
-      m: (text) => translateTerm(text, locale),
+      m: (text) => (text ? (text[locale] ?? text.tr) : ""),
     }),
     [locale],
   );

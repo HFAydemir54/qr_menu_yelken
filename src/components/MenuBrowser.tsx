@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { menu, type MenuCategory } from "@/data/menu";
+import type { Localized, MenuCategory } from "@/data/menu";
 import { useLocale } from "@/i18n/LocaleProvider";
 
 const priceFormatter = new Intl.NumberFormat("tr-TR", {
@@ -29,7 +30,7 @@ function normalize(value: string) {
 function filterCategory(
   category: MenuCategory,
   query: string,
-  m: (text: string) => string,
+  m: (text: Localized | null) => string,
 ) {
   const q = normalize(query.trim());
   if (!q) return category;
@@ -41,30 +42,30 @@ function filterCategory(
         ...group,
         items: group.items.filter(
           (item) =>
-            normalize(item.name).includes(q) ||
+            normalize(item.name.tr).includes(q) ||
             normalize(m(item.name)).includes(q) ||
-            normalize(item.note ?? "").includes(q) ||
-            normalize(m(item.note ?? "")).includes(q),
+            normalize(item.note?.tr ?? "").includes(q) ||
+            normalize(m(item.note)).includes(q),
         ),
       }))
       .filter((group) => group.items.length > 0),
   };
 }
 
-export function MenuBrowser() {
+export function MenuBrowser({ menu }: { menu: MenuCategory[] }) {
   const { t, m } = useLocale();
   const [query, setQuery] = useState("");
-  const [activeId, setActiveId] = useState(menu[0].id);
+  const [activeId, setActiveId] = useState(menu[0]?.id);
   const navRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const catHeadRef = useRef<HTMLDivElement>(null);
 
   const activeCategory = useMemo(
     () => menu.find((category) => category.id === activeId) ?? menu[0],
-    [activeId],
+    [menu, activeId],
   );
   const visible = useMemo(
-    () => filterCategory(activeCategory, query, m),
+    () => activeCategory && filterCategory(activeCategory, query, m),
     [activeCategory, query, m],
   );
 
@@ -97,6 +98,8 @@ export function MenuBrowser() {
       ?.querySelector(`[data-cat="${activeId}"]`)
       ?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
   }, [activeId]);
+
+  if (!activeCategory || !visible) return null;
 
   return (
     <>
@@ -176,8 +179,8 @@ export function MenuBrowser() {
             </p>
           )}
 
-          {visible.groups.map((group, groupIndex) => (
-            <div key={group.title ?? groupIndex} className="mt-4">
+          {visible.groups.map((group) => (
+            <div key={group.id} className="mt-4">
               {group.title && (
                 /* Sırası gelen alt başlık kategori başlığının altına yapışır */
                 <div className="sticky top-[calc(var(--tabbar-h)+var(--cathead-h))] z-10 -mx-1 bg-brand-cream px-1 pb-2 pt-1">
@@ -187,11 +190,22 @@ export function MenuBrowser() {
                 </div>
               )}
               <ul className="overflow-hidden rounded-2xl bg-brand-paper shadow-sm ring-1 ring-black/5">
-                {group.items.map((item, itemIndex) => (
+                {group.items.map((item) => (
                   <li
-                    key={`${item.name}-${item.note ?? ""}-${itemIndex}`}
-                    className="flex items-start gap-3 border-b border-black/5 px-4 py-3 last:border-b-0"
+                    key={item.id}
+                    className={`flex items-start gap-3 border-b border-black/5 px-4 py-3 last:border-b-0 ${
+                      item.available ? "" : "opacity-55"
+                    }`}
                   >
+                    {item.imageUrl && (
+                      <Image
+                        src={item.imageUrl}
+                        alt=""
+                        width={64}
+                        height={64}
+                        className="h-16 w-16 shrink-0 rounded-xl object-cover"
+                      />
+                    )}
                     <div className="min-w-0 flex-1">
                       <p className="font-medium leading-snug">{m(item.name)}</p>
                       {item.note && (
@@ -201,7 +215,13 @@ export function MenuBrowser() {
                       )}
                     </div>
                     <span className="shrink-0 pt-0.5 font-semibold tabular-nums text-brand-dark">
-                      {formatPrice(item.price)}
+                      {item.available ? (
+                        formatPrice(item.price)
+                      ) : (
+                        <span className="rounded-md bg-black/5 px-2 py-0.5 text-xs font-bold uppercase text-brand-muted">
+                          {t("soldOut")}
+                        </span>
+                      )}
                     </span>
                   </li>
                 ))}

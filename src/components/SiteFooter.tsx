@@ -3,7 +3,7 @@
 import { cafe } from "@/data/menu";
 import { useLocale } from "@/i18n/LocaleProvider";
 
-export function SiteFooter() {
+export function SiteFooter({ priceDate }: { priceDate: string }) {
   const { t } = useLocale();
 
   return (
@@ -21,7 +21,7 @@ export function SiteFooter() {
           {cafe.phone}
         </a>
         <p className="mt-4 text-xs">
-          {t("taxNote")} {t("priceDate")}: {cafe.priceDate}
+          {t("taxNote")} {t("priceDate")}: {priceDate}
         </p>
       </div>
     </footer>

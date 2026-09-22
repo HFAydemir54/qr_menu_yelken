@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { cafe, menu, type MenuCategory } from "@/data/menu";
 import { isLoggedIn } from "@/lib/admin-auth";
-import { readMenuFile } from "@/lib/github";
+import { fetchMenu } from "@/lib/menu-repo";
 import { LoginForm } from "./LoginForm";
-import { PriceEditor } from "./PriceEditor";
+import { MenuAdmin } from "./MenuAdmin";
 
 export const metadata: Metadata = {
   title: "Yönetim Paneli",
@@ -16,29 +15,6 @@ export const dynamic = "force-dynamic";
 export default async function AdminPage() {
   if (!(await isLoggedIn())) return <LoginForm />;
 
-  // Bekleyen bir deploy varsa bile son commit'lenmiş fiyatları göster.
-  let categories: MenuCategory[] = menu;
-  let priceDate = cafe.priceDate;
-  let source: "github" | "local" = "local";
-
-  try {
-    const { content } = await readMenuFile();
-    const data = JSON.parse(content) as {
-      priceDate: string;
-      categories: MenuCategory[];
-    };
-    categories = data.categories;
-    priceDate = data.priceDate;
-    source = "github";
-  } catch {
-    // GitHub yapılandırılmamışsa yerel veriyle devam et.
-  }
-
-  return (
-    <PriceEditor
-      categories={categories}
-      priceDate={priceDate}
-      source={source}
-    />
-  );
+  const { categories, priceDate } = await fetchMenu();
+  return <MenuAdmin categories={categories} priceDate={priceDate} />;
 }
