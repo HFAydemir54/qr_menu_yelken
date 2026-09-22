@@ -10,7 +10,12 @@ import { isLoggedIn } from "@/lib/admin-auth";
  * (https://aistudio.google.com/apikey). Model GEMINI_MODEL ile değiştirilebilir;
  * varsayılan takma ad, Google eski modelleri kapattığında otomatik güncel modele geçer.
  */
-const MODEL = process.env.GEMINI_MODEL ?? "gemini-flash-latest";
+const MODELS = [
+  process.env.GEMINI_MODEL ?? "gemini-flash-latest",
+  // Ücretsiz planda model zaman zaman "high demand" hatası verir; sırayla yedeklere geç.
+  "gemini-3.6-flash",
+  "gemini-3.5-flash-lite",
+];
 
 export type TranslateField = {
   /** Alan adı (ör. "name", "note") */
@@ -42,6 +47,27 @@ Kurallar:
 - Büyük harf kullanımını Türkçe metne uydur (TAMAMI BÜYÜK HARF başlıklar İngilizcede de öyle kalsın).
 - ÖNEMLİ: Bir alan için "önceki Türkçe" ve "mevcut çeviri" verilmişse, sıfırdan çevirme. Önceki Türkçe ile yeni Türkçeyi karşılaştır ve mevcut çeviride YALNIZCA değişen kısmı güncelle; geri kalan kelimeleri, sırayı ve üslubu aynen koru.
 - Türkçe metin boşsa, o alan için en ve ar boş string olsun.`;
+
+async function generateWithFallback(prompt: string) {
+  let lastError: unknown;
+  for (const model of MODELS) {
+    try {
+      const { output } = await generateText({
+        model: google(model),
+        system: SYSTEM,
+        prompt,
+        output: Output.object({ schema }),
+        maxRetries: 1,
+      });
+      return output;
+    } catch (error) {
+      lastError = error;
+      // Anahtar hatası yedek modelle de düzelmez.
+      if (error instanceof Error && /api key/i.test(error.message)) break;
+    }
+  }
+  throw lastError;
+}
 
 export async function translateAction(fields: TranslateField[]): Promise<TranslateResult> {
   if (!(await isLoggedIn())) return { ok: false, error: "Oturum sona erdi, tekrar giriş yapın." };
@@ -76,12 +102,7 @@ export async function translateAction(fields: TranslateField[]): Promise<Transla
     .join("\n\n");
 
   try {
-    const { output } = await generateText({
-      model: google(MODEL),
-      system: SYSTEM,
-      prompt,
-      output: Output.object({ schema }),
-    });
+    const output = await generateWithFallback(prompt);
 
     const result: Record<string, { en: string; ar: string }> = {};
     for (const field of input) {
