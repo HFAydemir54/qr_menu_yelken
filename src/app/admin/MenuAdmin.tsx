@@ -59,7 +59,12 @@ export function MenuAdmin({
 
   const rowActions = (table: Table, id: string, label: string, onEdit: () => void) => (
     <div className="flex shrink-0 items-center">
-      <button type="button" className={iconButton} onClick={onEdit} aria-label="Düzenle">✎</button>
+      <button type="button" className={`${iconButton} !h-10 !w-10 text-brand-dark`} onClick={onEdit} aria-label="Düzenle">
+        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+        </svg>
+      </button>
       <button
         type="button"
         className={`${iconButton} hover:text-red-600`}
@@ -377,12 +382,28 @@ function EditorDialog({
     <dialog
       ref={dialogRef}
       onClose={onClose}
+      // Dışarıdaki karartılmış alana tıklayınca kapat
+      onClick={(event) => {
+        if (event.target === event.currentTarget) dialogRef.current?.close();
+      }}
       className="m-auto w-[calc(100%-2rem)] max-w-lg rounded-2xl bg-brand-cream p-0 shadow-xl backdrop:bg-black/40"
     >
       <form ref={formRef} action={formAction} className="max-h-[85vh] space-y-4 overflow-y-auto p-5">
-        <h2 className="font-display text-xl font-bold text-brand-dark">
-          {existing ? `${noun} düzenle` : `${noun} ekle`}
-        </h2>
+        <div className="sticky -top-5 z-10 -mx-5 -mt-5 flex items-center justify-between gap-3 bg-brand-cream px-5 pb-2 pt-4">
+          <h2 className="font-display text-xl font-bold text-brand-dark">
+            {existing ? `${noun} düzenle` : `${noun} ekle`}
+          </h2>
+          <button
+            type="button"
+            onClick={() => dialogRef.current?.close()}
+            aria-label="Kapat"
+            className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full text-brand-dark hover:bg-black/10"
+          >
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+              <path d="M6 6l12 12M18 6 6 18" />
+            </svg>
+          </button>
+        </div>
         {existing && <input type="hidden" name="id" value={existing.id} />}
 
         {editor.kind === "category" && (
